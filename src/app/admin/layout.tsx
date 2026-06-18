@@ -1,11 +1,30 @@
 "use client";
 
+import { useEffect, useState } from "react"; 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [authorized, setAuthorized] = useState(false);
+  const router = useRouter();
 
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        // No user found? Kick them to the login page
+        router.push("/login");
+      } else {
+        setAuthorized(true);
+      }
+    };
+    checkUser();
+  }, [router]);
+
+  if (!authorized) return null;
   const navItems = [
     { name: "Enquiries", href: "/admin" },
     { name: "Manage Trips", href: "/admin/trips" },
