@@ -38,6 +38,9 @@ const emptyForm = {
   status: "open",
 };
 
+// Utility to display rupee symbol, fallback to nothing if not desired
+const RUPEE = "₹"; // You could use empty string "" if you want to show nothing
+
 export default function AdminTripsPage() {
   const [trips, setTrips] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -342,7 +345,10 @@ export default function AdminTripsPage() {
                       {trip.end_date ? format(new Date(trip.end_date), "dd MMM yyyy") : "?"}
                     </span>
                   </TableCell>
-                  <TableCell>${trip.price_gst?.toLocaleString()}</TableCell>
+                  <TableCell>
+                    {/* Display price with rupee sign (or nothing if you want) */}
+                    {RUPEE}{trip.price_gst?.toLocaleString()}
+                  </TableCell>
                   <TableCell>{trip.total_seats}</TableCell>
                   <TableCell>
                     <span className={`px-2 py-1 rounded text-xs font-bold ${
