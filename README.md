@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nomichi Trip Desk — Engineering Intern Build
 
-## Getting Started
+This is my submission for the Nomichi Engineering Intern build assignment. The goal was to move the team's workflow from manual Google Sheets into a dedicated, working web application.
 
-First, run the development server:
+## Core Functions
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+I built this app in three connected parts to ensure a lead moves smoothly from first contact to a confirmed seat:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. **Public Enquiry Page** — A mobile-first page where travellers can see open trips and send an enquiry. I used Zod for form validation to ensure the team gets clean data (valid emails and phone numbers).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. **Team Admin (The CRM)** — A secure area for the Nomichi team to see all leads.
+   - **Lead List**: A searchable table to see who has applied.
+   - **Lead Detail View**: A dedicated page for each traveller where the team can update their status (NEW to CONFIRMED).
+   - **Call Log**: A notes system to save timestamped records of conversations with travellers.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Trips CMS** — A management tool where the team can create or edit trips (change prices, dates, or status) without touching the code.
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- **Framework**: Next.js 15 (App Router)
+- **Database & Auth**: Supabase (Postgres)
+- **Styling**: Tailwind CSS + Shadcn/UI
+- **Form Handling**: React Hook Form + Zod
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Key Decisions & Trade-offs
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Native UI for Stability**: I chose to use native HTML select elements for the dropdowns. While less "fancy" than some library components, they are 100% reliable on mobile devices and prevented bugs that would have frustrated the user.
 
-## Deploy on Vercel
+- **Relational Schema**: I set up the database so that Leads are directly linked to Trips in Postgres. This means if a trip's name or price is updated in the CMS, it reflects correctly everywhere in the CRM.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Brand Alignment**: I strictly followed the Nomichi brand guide, using the provided hex codes (#D55D27 Rust, #FFFBF5 Cream) and keeping the UI "calm" with no exclamation marks in the copy.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## How to Run Locally
+
+1. Clone the repository.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file with your Supabase credentials:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=your_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_key
+   ```
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+5. Access the admin panel at `/login`.
+
+## Future Improvements
+
+Given more time, I would:
+
+- Add a visual dashboard with charts to show lead conversion rates.
+- Integrate an AI "Vibe Check" to help the team prioritize enquiries based on the traveller's message.
+- Implement Row-Level Security (RLS) to restrict data access based on team roles.
